@@ -1,8 +1,8 @@
 BigBrother::Application.routes.draw do
-  get 'sessions/new'
-
   root 'static_pages#home'
-
+  get 'account_activations/edit'
+  get 'sessions/new'
+  
   get 'about' => 'static_pages#about'
   get 'contact_us' => 'static_pages#contact_us'
   get 'signup' => 'users#new'
@@ -11,5 +11,6 @@ BigBrother::Application.routes.draw do
   delete 'logout' => 'sessions#destroy'
 
   resources :users
+  resources :account_activations, only: [:edit]
 
 end

@@ -32,9 +32,9 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      flash[:success] = "Bienvenue!"
-      log_in @user
-      redirect_to @user
+      @user.send_activation_email
+      flash[:info] = "Please check your email to activate your account"
+      redirect_to root_url
     else
       render 'new'
     end
@@ -89,4 +89,7 @@ class UsersController < ApplicationController
       redirect_to(root_url) unless current_user.admin?
     end
 
+    def send_activation
+      UserMailer.account_activation(@user).deliver_now
+    end
 end
