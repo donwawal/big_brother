@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
             uniqueness: {case_sensitive: false}
   has_secure_password
   validates :password, length: {minimum: 6}
+  has_many :microposts, dependent: :destroy
 
     # Returns the hash digest of the given string.
   def User.digest(string)
@@ -29,6 +30,10 @@ class User < ActiveRecord::Base
   def activate
     update_attribute(:activated, true)
     update_attribute(:activated_at, Time.zone.now)
+  end
+
+  def feed
+    Micropost.where("user_id = ?", id)
   end
 
   def send_activation_email
